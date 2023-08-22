@@ -19,7 +19,7 @@ namespace darksouls3_Save_Manager
         {
             InitializeComponent();
 
-            userDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "DarkSouls3");
+            userDirectory = GetUserDirectory();
             btnDuplicate.Visible = false;
             lvFileList.Columns.Add("File Name", 150);
             lvFileList.Columns.Add("Last Modified", 150);
@@ -30,6 +30,29 @@ namespace darksouls3_Save_Manager
             PopulateSaveFileList();
             PopulateTargetFileList(userDirectory);
         }
+
+        //first folder would be ur save file path. 이제 스왑 기능/스왑시 파일이름/어떤 파일과 스왑할지 -이건 어차피 기본이랑 바꾸겠지 옆에 걸 두번 클릭하면 그걸로 스왑? 스왑된 파일은 
+        private string GetUserDirectory()
+        {
+            try
+            {
+                string roamingPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "DarkSoulsIII");
+                if (Directory.Exists(roamingPath))
+                {
+                    string[] subDirectories = Directory.GetDirectories(roamingPath);
+                    if (subDirectories.Length > 0)
+                    {
+                        return subDirectories[0];
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error getting user directory: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            return null;
+        }
+
         private void PopulateSaveFileList()
         {
             lvFileList.Items.Clear();
@@ -95,6 +118,7 @@ namespace darksouls3_Save_Manager
                     {
                         txtFilePath.Text += Environment.NewLine + filePath;
                     }
+
                     PopulateTargetFileList(userDirectory);
                     btnDuplicate.Visible=true;
                     PopulateSaveFileList();
