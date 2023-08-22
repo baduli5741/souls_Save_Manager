@@ -22,11 +22,15 @@ namespace darksouls3_Save_Manager
             userDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "DarkSouls3");
             btnDuplicate.Visible = false;
             lvFileList.Columns.Add("File Name", 150);
-            lvFileList.Columns.Add("Change Time", 150);
+            lvFileList.Columns.Add("Last Modified", 150);
 
-            PopulateFileList();
+            lvTargetFiles.Columns.Add("File Name", 150);
+            lvTargetFiles.Columns.Add("Last Modified", 150);
+
+            PopulateSaveFileList();
+            PopulateTargetFileList(userDirectory);
         }
-        private void PopulateFileList()
+        private void PopulateSaveFileList()
         {
             lvFileList.Items.Clear();
 
@@ -44,6 +48,32 @@ namespace darksouls3_Save_Manager
                     lvFileList.Items.Add(item);
                 }
             }
+        }
+        private void PopulateTargetFileList(string directoryPath)
+        {
+            lvTargetFiles.Items.Clear(); // 기존 아이템 삭제
+            try
+            {
+                string[] targetFiles = Directory.GetFiles(directoryPath); //오류 
+                if (Directory.Exists(directoryPath))
+                {
+                    foreach (string filePath in targetFiles)
+                    {
+                        FileInfo fileInfo = new FileInfo(filePath);
+
+                        ListViewItem item = new ListViewItem(fileInfo.Name);
+                        item.SubItems.Add(fileInfo.LastWriteTime.ToString("yyyy-MM-dd HH:mm:ss"));
+                        lvTargetFiles.Items.Add(item);
+                    }
+                }
+            }
+
+            catch (Exception ex)
+            {
+                MessageBox.Show("The 'DarkSouls3' directory does not exist.\nYou should execute DarkSouls3 at least once", "Directory Not Found", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
         }
         private void btnFind_Click(object sender, EventArgs e)
         {
@@ -65,9 +95,9 @@ namespace darksouls3_Save_Manager
                     {
                         txtFilePath.Text += Environment.NewLine + filePath;
                     }
-
+                    PopulateTargetFileList(userDirectory);
                     btnDuplicate.Visible=true;
-                    PopulateFileList();
+                    PopulateSaveFileList();
                 }
                 else
                 {
@@ -94,7 +124,7 @@ namespace darksouls3_Save_Manager
                 File.Copy(sourceFile, targetFile); // 파일 복사
 
                 MessageBox.Show("File duplicated successfully.", "Duplicate Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                PopulateFileList();
+                PopulateSaveFileList();
             }
             catch (Exception ex)
             {

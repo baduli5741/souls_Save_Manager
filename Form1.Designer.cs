@@ -32,6 +32,7 @@
             this.txtFilePath = new System.Windows.Forms.TextBox();
             this.btnDuplicate = new System.Windows.Forms.Button();
             this.lvFileList = new System.Windows.Forms.ListView();
+            this.lvTargetFiles = new System.Windows.Forms.ListView();
             this.SuspendLayout();
             // 
             // btnFind
@@ -71,11 +72,22 @@
             this.lvFileList.UseCompatibleStateImageBehavior = false;
             this.lvFileList.View = System.Windows.Forms.View.Details;
             // 
+            // lvTargetFiles
+            // 
+            this.lvTargetFiles.HideSelection = false;
+            this.lvTargetFiles.Location = new System.Drawing.Point(57, 92);
+            this.lvTargetFiles.Name = "lvTargetFiles";
+            this.lvTargetFiles.Size = new System.Drawing.Size(184, 204);
+            this.lvTargetFiles.TabIndex = 4;
+            this.lvTargetFiles.UseCompatibleStateImageBehavior = false;
+            this.lvTargetFiles.View = System.Windows.Forms.View.Details;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.lvTargetFiles);
             this.Controls.Add(this.lvFileList);
             this.Controls.Add(this.btnDuplicate);
             this.Controls.Add(this.txtFilePath);
@@ -93,6 +105,7 @@
         private System.Windows.Forms.TextBox txtFilePath;
         private System.Windows.Forms.Button btnDuplicate;
         private System.Windows.Forms.ListView lvFileList;
+        private System.Windows.Forms.ListView lvTargetFiles;
     }
 }
 
