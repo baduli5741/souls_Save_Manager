@@ -7,16 +7,17 @@ namespace darksouls3_Save_Manager
     public partial class Form1 : Form
     {
         private string userDirectory;
+        private string targetFileName;
 
         public Form1()
         {
             InitializeComponent();
 
-            userDirectory = GetUserDirectory();
+            userDirectory = GetUserDirectory("DarkSoulsIII");
+            SetTargetFileName("DS30000.sl2");
             btnDuplicate.Visible = false;
             InitializeListViewColumns();
             PopulateSaveFileList();
-            //PopulateTargetFileList(userDirectory);
         }
 
         private void InitializeListViewColumns()
@@ -28,19 +29,18 @@ namespace darksouls3_Save_Manager
             lvTargetFiles.Columns.Add("Last Modified", 150);
         }
 
-        //first folder would be ur save file path. 이제 스왑 기능/스왑시 파일이름/어떤 파일과 스왑할지 -이건 어차피 기본이랑 바꾸겠지 옆에 걸 두번 클릭하면 그걸로 스왑? 스왑된 파일은 
-       
-        private void AddListViewItem(ListView listView,FileInfo fileInfo)
+        private void AddListViewItem(ListView listView, FileInfo fileInfo)
         {
             ListViewItem item = new ListViewItem(fileInfo.Name);
             item.SubItems.Add(fileInfo.LastWriteTime.ToString("yyyy-MM-dd HH:mm:ss"));
-            listView.Items.Add(item); //바보 lvFileList가 아니라 listview에 넣어야지 근데 save쪽은 어떻게 보였던거지.
+            listView.Items.Add(item);
         }
-        private string GetUserDirectory()
+
+        private string GetUserDirectory(string gameName)
         {
             try
             {
-                string roamingPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "DarkSoulsIII");
+                string roamingPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), gameName);
                 if (Directory.Exists(roamingPath))
                 {
                     string[] subDirectories = Directory.GetDirectories(roamingPath);
@@ -57,6 +57,35 @@ namespace darksouls3_Save_Manager
             return null;
         }
 
+        private void SetTargetFileName(string fileName)
+        {
+            targetFileName = fileName;
+        }
+
+        private void PopulateTargetFileList(string directoryPath)
+        {
+            lvTargetFiles.Items.Clear(); // 기존 아이템 삭제
+            try
+            {
+                if (Directory.Exists(directoryPath))
+                {
+                    string[] targetFiles = Directory.GetFiles(directoryPath);
+                    foreach (string filePath in targetFiles)
+                    {
+                        FileInfo fileInfo = new FileInfo(filePath);
+                        AddListViewItem(lvTargetFiles, fileInfo);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("The directory does not exist.\nYou should execute the game at least once", "Directory Not Found", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error populating target file list: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
         private void PopulateSaveFileList()
         {
             lvFileList.Items.Clear();
@@ -74,44 +103,17 @@ namespace darksouls3_Save_Manager
                 }
             }
         }
-        private void PopulateTargetFileList(string directoryPath)
-        {
-            lvTargetFiles.Items.Clear(); // 기존 아이템 삭제
-            try
-            {
-                
-                if (Directory.Exists(directoryPath))
-                {
-                    string[] targetFiles = Directory.GetFiles(directoryPath); //오류 
-                    foreach (string filePath in targetFiles)
-                    {
-                        FileInfo fileInfo = new FileInfo(filePath);
-                        AddListViewItem (lvTargetFiles, fileInfo);
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("The 'DarkSouls3' directory does not exist.\nYou should execute DarkSouls3 at least once", "Directory Not Found", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-            }
 
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error populating target file list: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-
-        }
         private void btnFind_Click(object sender, EventArgs e)
         {
             try
             {
                 if (!Directory.Exists(userDirectory))
                 {
-                    MessageBox.Show("The 'DarkSouls3' directory does not exist.\nYou should execute DarkSouls3 at least once", "Directory Not Found", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("The directory does not exist.\nYou should execute the game at least once", "Directory Not Found", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
 
-                string targetFileName = "DS30000.sl2";
                 string[] files = Directory.GetFiles(userDirectory, targetFileName, SearchOption.AllDirectories);
 
                 if (files.Length > 0)
@@ -123,7 +125,7 @@ namespace darksouls3_Save_Manager
                     }
 
                     PopulateTargetFileList(userDirectory);
-                    btnDuplicate.Visible=true;
+                    btnDuplicate.Visible = true;
                     PopulateSaveFileList();
                 }
                 else
@@ -141,14 +143,13 @@ namespace darksouls3_Save_Manager
         {
             try
             {
-                string sourceFile = txtFilePath.Text.Split('\n')[1].Trim(); // 첫 번째 파일 경로 추출
-                string targetDirectory = Path.GetDirectoryName(Application.ExecutablePath); // 실행 파일이 있는 폴더
-
+                string sourceFile = txtFilePath.Text.Split('\n')[1].Trim();
+                string targetDirectory = Path.GetDirectoryName(Application.ExecutablePath);
                 string newFileName = Path.GetFileNameWithoutExtension(sourceFile) + "_" + DateTime.Now.ToString("yyyyMMddHHmmss") + Path.GetExtension(sourceFile);
-                string targetFile = Path.Combine(targetDirectory, "save", newFileName); // 타겟 파일 경로 생성
+                string targetFile = Path.Combine(targetDirectory, "save", newFileName);
 
-                Directory.CreateDirectory(Path.Combine(targetDirectory, "save")); // save 폴더 생성
-                File.Copy(sourceFile, targetFile); // 파일 복사
+                Directory.CreateDirectory(Path.Combine(targetDirectory, "save"));
+                File.Copy(sourceFile, targetFile);
 
                 MessageBox.Show("File duplicated successfully.", "Duplicate Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 PopulateSaveFileList();
@@ -157,9 +158,7 @@ namespace darksouls3_Save_Manager
             {
                 MessageBox.Show("Error duplicating file: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
         }
-
 
         private void btnQuickSwap_Click(object sender, EventArgs e)
         {
@@ -173,7 +172,7 @@ namespace darksouls3_Save_Manager
                     return;
                 }
 
-                string targetFile = Path.Combine(userDirectory, "DS30000.sl2");
+                string targetFile = Path.Combine(userDirectory, targetFileName);
 
                 if (File.Exists(targetFile))
                 {
@@ -189,7 +188,7 @@ namespace darksouls3_Save_Manager
                 }
                 else
                 {
-                    MessageBox.Show("Target file 'DS30000.sl2' not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Target file not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             catch (Exception ex)
@@ -212,5 +211,23 @@ namespace darksouls3_Save_Manager
             return null;
         }
 
+        private void btnGame1_Click(object sender, EventArgs e)
+        {
+            userDirectory = GetUserDirectory("DarkSoulsIII");
+            SetTargetFileName("DS30000.sl2");
+        }
+
+        private void btnGame2_Click(object sender, EventArgs e)
+        {
+            userDirectory = GetUserDirectory("Sekiro");
+            SetTargetFileName("S0000.sl2");
+        }
+
+        private void btnGame3_Click(object sender, EventArgs e)
+        {
+            userDirectory = GetUserDirectory("EldenRing");
+            SetTargetFileName("ER0000.sl2");
+        }
     }
 }
+

@@ -34,6 +34,9 @@
             this.lvFileList = new System.Windows.Forms.ListView();
             this.lvTargetFiles = new System.Windows.Forms.ListView();
             this.btnQuickSwap = new System.Windows.Forms.Button();
+            this.btnGame1 = new System.Windows.Forms.Button();
+            this.btnGame2 = new System.Windows.Forms.Button();
+            this.btnGame3 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnFind
@@ -93,11 +96,44 @@
             this.btnQuickSwap.UseVisualStyleBackColor = true;
             this.btnQuickSwap.Click += new System.EventHandler(this.btnQuickSwap_Click);
             // 
+            // btnGame1
+            // 
+            this.btnGame1.Location = new System.Drawing.Point(25, 29);
+            this.btnGame1.Name = "btnGame1";
+            this.btnGame1.Size = new System.Drawing.Size(100, 23);
+            this.btnGame1.TabIndex = 6;
+            this.btnGame1.Text = "DarkSoulsIII";
+            this.btnGame1.UseVisualStyleBackColor = true;
+            this.btnGame1.Click += new System.EventHandler(this.btnGame1_Click);
+            // 
+            // btnGame2
+            // 
+            this.btnGame2.Location = new System.Drawing.Point(142, 29);
+            this.btnGame2.Name = "btnGame2";
+            this.btnGame2.Size = new System.Drawing.Size(96, 23);
+            this.btnGame2.TabIndex = 7;
+            this.btnGame2.Text = "Sekiro";
+            this.btnGame2.UseVisualStyleBackColor = true;
+            this.btnGame2.Click += new System.EventHandler(this.btnGame2_Click);
+            // 
+            // btnGame3
+            // 
+            this.btnGame3.Location = new System.Drawing.Point(258, 29);
+            this.btnGame3.Name = "btnGame3";
+            this.btnGame3.Size = new System.Drawing.Size(98, 23);
+            this.btnGame3.TabIndex = 8;
+            this.btnGame3.Text = "EldenRing";
+            this.btnGame3.UseVisualStyleBackColor = true;
+            this.btnGame3.Click += new System.EventHandler(this.btnGame3_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnGame3);
+            this.Controls.Add(this.btnGame2);
+            this.Controls.Add(this.btnGame1);
             this.Controls.Add(this.btnQuickSwap);
             this.Controls.Add(this.lvTargetFiles);
             this.Controls.Add(this.lvFileList);
@@ -119,6 +155,9 @@
         private System.Windows.Forms.ListView lvFileList;
         private System.Windows.Forms.ListView lvTargetFiles;
         private System.Windows.Forms.Button btnQuickSwap;
+        private System.Windows.Forms.Button btnGame1;
+        private System.Windows.Forms.Button btnGame2;
+        private System.Windows.Forms.Button btnGame3;
     }
 }
 
