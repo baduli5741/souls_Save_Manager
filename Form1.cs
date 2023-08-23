@@ -1,12 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace darksouls3_Save_Manager
@@ -23,7 +16,7 @@ namespace darksouls3_Save_Manager
             btnDuplicate.Visible = false;
             InitializeListViewColumns();
             PopulateSaveFileList();
-            PopulateTargetFileList(userDirectory);
+            //PopulateTargetFileList(userDirectory);
         }
 
         private void InitializeListViewColumns()
@@ -167,6 +160,7 @@ namespace darksouls3_Save_Manager
 
         }
 
+
         private void btnQuickSwap_Click(object sender, EventArgs e)
         {
             try
@@ -191,6 +185,7 @@ namespace darksouls3_Save_Manager
 
                     MessageBox.Show("Quick swap completed.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     PopulateTargetFileList(userDirectory);
+                    PopulateSaveFileList();
                 }
                 else
                 {

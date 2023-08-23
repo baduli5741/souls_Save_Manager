@@ -48,16 +48,16 @@
             // 
             // txtFilePath
             // 
-            this.txtFilePath.Location = new System.Drawing.Point(231, 347);
+            this.txtFilePath.Location = new System.Drawing.Point(230, 352);
             this.txtFilePath.Name = "txtFilePath";
             this.txtFilePath.Size = new System.Drawing.Size(305, 25);
             this.txtFilePath.TabIndex = 1;
             // 
             // btnDuplicate
             // 
-            this.btnDuplicate.Location = new System.Drawing.Point(620, 343);
+            this.btnDuplicate.Location = new System.Drawing.Point(610, 348);
             this.btnDuplicate.Name = "btnDuplicate";
-            this.btnDuplicate.Size = new System.Drawing.Size(75, 29);
+            this.btnDuplicate.Size = new System.Drawing.Size(114, 29);
             this.btnDuplicate.TabIndex = 2;
             this.btnDuplicate.Text = "Duplicate";
             this.btnDuplicate.UseVisualStyleBackColor = true;
@@ -66,9 +66,9 @@
             // lvFileList
             // 
             this.lvFileList.HideSelection = false;
-            this.lvFileList.Location = new System.Drawing.Point(562, 92);
+            this.lvFileList.Location = new System.Drawing.Point(471, 92);
             this.lvFileList.Name = "lvFileList";
-            this.lvFileList.Size = new System.Drawing.Size(184, 204);
+            this.lvFileList.Size = new System.Drawing.Size(275, 200);
             this.lvFileList.TabIndex = 3;
             this.lvFileList.UseCompatibleStateImageBehavior = false;
             this.lvFileList.View = System.Windows.Forms.View.Details;
@@ -78,14 +78,14 @@
             this.lvTargetFiles.HideSelection = false;
             this.lvTargetFiles.Location = new System.Drawing.Point(57, 92);
             this.lvTargetFiles.Name = "lvTargetFiles";
-            this.lvTargetFiles.Size = new System.Drawing.Size(184, 204);
+            this.lvTargetFiles.Size = new System.Drawing.Size(275, 200);
             this.lvTargetFiles.TabIndex = 4;
             this.lvTargetFiles.UseCompatibleStateImageBehavior = false;
             this.lvTargetFiles.View = System.Windows.Forms.View.Details;
             // 
             // btnQuickSwap
             // 
-            this.btnQuickSwap.Location = new System.Drawing.Point(620, 389);
+            this.btnQuickSwap.Location = new System.Drawing.Point(610, 394);
             this.btnQuickSwap.Name = "btnQuickSwap";
             this.btnQuickSwap.Size = new System.Drawing.Size(114, 28);
             this.btnQuickSwap.TabIndex = 5;
