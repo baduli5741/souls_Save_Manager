@@ -33,6 +33,7 @@
             this.btnDuplicate = new System.Windows.Forms.Button();
             this.lvFileList = new System.Windows.Forms.ListView();
             this.lvTargetFiles = new System.Windows.Forms.ListView();
+            this.btnQuickSwap = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnFind
@@ -54,7 +55,7 @@
             // 
             // btnDuplicate
             // 
-            this.btnDuplicate.Location = new System.Drawing.Point(616, 348);
+            this.btnDuplicate.Location = new System.Drawing.Point(620, 343);
             this.btnDuplicate.Name = "btnDuplicate";
             this.btnDuplicate.Size = new System.Drawing.Size(75, 29);
             this.btnDuplicate.TabIndex = 2;
@@ -82,11 +83,22 @@
             this.lvTargetFiles.UseCompatibleStateImageBehavior = false;
             this.lvTargetFiles.View = System.Windows.Forms.View.Details;
             // 
+            // btnQuickSwap
+            // 
+            this.btnQuickSwap.Location = new System.Drawing.Point(620, 389);
+            this.btnQuickSwap.Name = "btnQuickSwap";
+            this.btnQuickSwap.Size = new System.Drawing.Size(114, 28);
+            this.btnQuickSwap.TabIndex = 5;
+            this.btnQuickSwap.Text = "Quick swap";
+            this.btnQuickSwap.UseVisualStyleBackColor = true;
+            this.btnQuickSwap.Click += new System.EventHandler(this.btnQuickSwap_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnQuickSwap);
             this.Controls.Add(this.lvTargetFiles);
             this.Controls.Add(this.lvFileList);
             this.Controls.Add(this.btnDuplicate);
@@ -106,6 +118,7 @@
         private System.Windows.Forms.Button btnDuplicate;
         private System.Windows.Forms.ListView lvFileList;
         private System.Windows.Forms.ListView lvTargetFiles;
+        private System.Windows.Forms.Button btnQuickSwap;
     }
 }
 

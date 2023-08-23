@@ -21,17 +21,28 @@ namespace darksouls3_Save_Manager
 
             userDirectory = GetUserDirectory();
             btnDuplicate.Visible = false;
+            InitializeListViewColumns();
+            PopulateSaveFileList();
+            PopulateTargetFileList(userDirectory);
+        }
+
+        private void InitializeListViewColumns()
+        {
             lvFileList.Columns.Add("File Name", 150);
             lvFileList.Columns.Add("Last Modified", 150);
 
             lvTargetFiles.Columns.Add("File Name", 150);
             lvTargetFiles.Columns.Add("Last Modified", 150);
-
-            PopulateSaveFileList();
-            PopulateTargetFileList(userDirectory);
         }
 
         //first folder would be ur save file path. 이제 스왑 기능/스왑시 파일이름/어떤 파일과 스왑할지 -이건 어차피 기본이랑 바꾸겠지 옆에 걸 두번 클릭하면 그걸로 스왑? 스왑된 파일은 
+       
+        private void AddListViewItem(ListView listView,FileInfo fileInfo)
+        {
+            ListViewItem item = new ListViewItem(fileInfo.Name);
+            item.SubItems.Add(fileInfo.LastWriteTime.ToString("yyyy-MM-dd HH:mm:ss"));
+            listView.Items.Add(item); //바보 lvFileList가 아니라 listview에 넣어야지 근데 save쪽은 어떻게 보였던거지.
+        }
         private string GetUserDirectory()
         {
             try
@@ -66,9 +77,7 @@ namespace darksouls3_Save_Manager
                 foreach (string filePath in files)
                 {
                     FileInfo fileInfo = new FileInfo(filePath);
-                    ListViewItem item = new ListViewItem(fileInfo.Name);
-                    item.SubItems.Add(fileInfo.LastWriteTime.ToString("yyyy-MM-dd HH:mm:ss"));
-                    lvFileList.Items.Add(item);
+                    AddListViewItem(lvFileList, fileInfo);
                 }
             }
         }
@@ -77,24 +86,25 @@ namespace darksouls3_Save_Manager
             lvTargetFiles.Items.Clear(); // 기존 아이템 삭제
             try
             {
-                string[] targetFiles = Directory.GetFiles(directoryPath); //오류 
+                
                 if (Directory.Exists(directoryPath))
                 {
+                    string[] targetFiles = Directory.GetFiles(directoryPath); //오류 
                     foreach (string filePath in targetFiles)
                     {
                         FileInfo fileInfo = new FileInfo(filePath);
-
-                        ListViewItem item = new ListViewItem(fileInfo.Name);
-                        item.SubItems.Add(fileInfo.LastWriteTime.ToString("yyyy-MM-dd HH:mm:ss"));
-                        lvTargetFiles.Items.Add(item);
+                        AddListViewItem (lvTargetFiles, fileInfo);
                     }
+                }
+                else
+                {
+                    MessageBox.Show("The 'DarkSouls3' directory does not exist.\nYou should execute DarkSouls3 at least once", "Directory Not Found", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
 
             catch (Exception ex)
             {
-                MessageBox.Show("The 'DarkSouls3' directory does not exist.\nYou should execute DarkSouls3 at least once", "Directory Not Found", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
+                MessageBox.Show("Error populating target file list: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
         }
@@ -108,7 +118,7 @@ namespace darksouls3_Save_Manager
                     return;
                 }
 
-                string targetFileName = "DS30000.txt";
+                string targetFileName = "DS30000.sl2";
                 string[] files = Directory.GetFiles(userDirectory, targetFileName, SearchOption.AllDirectories);
 
                 if (files.Length > 0)
@@ -156,5 +166,56 @@ namespace darksouls3_Save_Manager
             }
 
         }
+
+        private void btnQuickSwap_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string mostRecentSave = GetMostRecentSaveFile();
+
+                if (mostRecentSave == null)
+                {
+                    MessageBox.Show("No save files found in the 'save' directory.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                string targetFile = Path.Combine(userDirectory, "DS30000.sl2");
+
+                if (File.Exists(targetFile))
+                {
+                    string newFileName = "swapped_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".sl2";
+                    string backupPath = Path.Combine(Application.StartupPath, "save", newFileName);
+
+                    File.Copy(targetFile, backupPath);
+                    File.Copy(mostRecentSave, targetFile, true);
+
+                    MessageBox.Show("Quick swap completed.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    PopulateTargetFileList(userDirectory);
+                }
+                else
+                {
+                    MessageBox.Show("Target file 'DS30000.sl2' not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error during quick swap: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private string GetMostRecentSaveFile()
+        {
+            string saveDirectory = Path.Combine(Application.StartupPath, "save");
+            string[] saveFiles = Directory.GetFiles(saveDirectory, "*.sl2");
+
+            if (saveFiles.Length > 0)
+            {
+                Array.Sort(saveFiles, (a, b) => File.GetLastWriteTime(b).CompareTo(File.GetLastWriteTime(a)));
+                return saveFiles[0];
+            }
+
+            return null;
+        }
+
     }
 }
