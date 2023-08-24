@@ -2,7 +2,7 @@
 using System.IO;
 using System.Windows.Forms;
 
-namespace darksouls3_Save_Manager
+namespace souls_Save_Manager
 {
     public partial class Form1 : Form
     {
@@ -16,8 +16,9 @@ namespace darksouls3_Save_Manager
             userDirectory = GetUserDirectory("DarkSoulsIII");
             SetTargetFileName("DS30000.sl2");
             btnDuplicate.Visible = false;
+            btnFind.Visible = false;
             InitializeListViewColumns();
-            PopulateSaveFileList();
+            //PopulateSaveFileList();
         }
 
         private void InitializeListViewColumns()
@@ -244,6 +245,7 @@ namespace darksouls3_Save_Manager
             userDirectory = GetUserDirectory("DarkSoulsIII");
             SetTargetFileName("DS30000.sl2");
             string gameSaveFolder = GetSaveDirectory("DarkSoulsIII");
+            btnFind_Click(sender, e);
         }
 
         private void btnGame2_Click(object sender, EventArgs e)
@@ -251,6 +253,7 @@ namespace darksouls3_Save_Manager
             userDirectory = GetUserDirectory("Sekiro");
             SetTargetFileName("S0000.sl2");
             string gameSaveFolder = GetSaveDirectory("Sekiro");
+            btnFind_Click(sender, e);
         }
 
         private void btnGame3_Click(object sender, EventArgs e)
@@ -258,6 +261,7 @@ namespace darksouls3_Save_Manager
             userDirectory = GetUserDirectory("EldenRing");
             SetTargetFileName("ER0000.sl2");
             string gameSaveFolder = GetSaveDirectory("EldenRing");
+            btnFind_Click(sender, e);
         }
     }
 }
