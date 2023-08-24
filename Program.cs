@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace darksouls3_Save_Manager
+namespace souls_Save_Manager
 {
     internal static class Program
     {
