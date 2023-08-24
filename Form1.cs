@@ -57,6 +57,24 @@ namespace darksouls3_Save_Manager
             return null;
         }
 
+        private string GetSaveDirectory(string gameName)
+        {
+            try
+            {
+                string savePath = Path.Combine(Application.StartupPath, gameName + "_Save");
+                if (!Directory.Exists(savePath))
+                {
+                    Directory.CreateDirectory(savePath);
+                }
+                return savePath;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error getting save directory: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            return null;
+        }
+
         private void SetTargetFileName(string fileName)
         {
             targetFileName = fileName;
@@ -86,15 +104,15 @@ namespace darksouls3_Save_Manager
                 MessageBox.Show("Error populating target file list: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+        //일단 save 파일 버튼 클릭마다 변경되게 해야하고
         private void PopulateSaveFileList()
         {
             lvFileList.Items.Clear();
 
-            string saveDirectory = Path.Combine(Application.StartupPath, "save");
-
-            if (Directory.Exists(saveDirectory))
+            string gameSaveFolder = GetSaveDirectory(GetUserGameName(userDirectory));
+            if (Directory.Exists(gameSaveFolder))
             {
-                string[] files = Directory.GetFiles(saveDirectory);
+                string[] files = Directory.GetFiles(gameSaveFolder);
 
                 foreach (string filePath in files)
                 {
@@ -144,11 +162,10 @@ namespace darksouls3_Save_Manager
             try
             {
                 string sourceFile = txtFilePath.Text.Split('\n')[1].Trim();
-                string targetDirectory = Path.GetDirectoryName(Application.ExecutablePath);
+                string gameSaveFolder = GetSaveDirectory(GetUserGameName(userDirectory));
                 string newFileName = Path.GetFileNameWithoutExtension(sourceFile) + "_" + DateTime.Now.ToString("yyyyMMddHHmmss") + Path.GetExtension(sourceFile);
-                string targetFile = Path.Combine(targetDirectory, "save", newFileName);
-
-                Directory.CreateDirectory(Path.Combine(targetDirectory, "save"));
+                string targetFile = Path.Combine(gameSaveFolder, newFileName);
+ 
                 File.Copy(sourceFile, targetFile);
 
                 MessageBox.Show("File duplicated successfully.", "Duplicate Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -172,25 +189,20 @@ namespace darksouls3_Save_Manager
                     return;
                 }
 
-                string targetFile = Path.Combine(userDirectory, targetFileName);
+                string targetFile = Path.Combine(userDirectory, targetFileName);//외부 내부 차이? 생각 아니 if를 없애도 되었나?
+                string gameBackupFolder = GetSaveDirectory(GetUserGameName(userDirectory) + "_Backup");
 
-                if (File.Exists(targetFile))
-                {
-                    string newFileName = "swapped_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".sl2";
-                    string backupPath = Path.Combine(Application.StartupPath, "save", newFileName);
+                string newFileName = "QS_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".sl2";
+                string backupPath = Path.Combine(gameBackupFolder, newFileName);
 
-                    File.Copy(targetFile, backupPath);
-                    File.Copy(mostRecentSave, targetFile, true);
+                File.Copy(targetFile, backupPath);
+                File.Copy(mostRecentSave, targetFile, true);
 
-                    MessageBox.Show("Quick swap completed.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    PopulateTargetFileList(userDirectory);
-                    PopulateSaveFileList();
-                }
-                else
-                {
-                    MessageBox.Show("Target file not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                MessageBox.Show("Quick swap completed.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                PopulateTargetFileList(userDirectory);
+                PopulateSaveFileList();             
             }
+
             catch (Exception ex)
             {
                 MessageBox.Show("Error during quick swap: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -198,9 +210,9 @@ namespace darksouls3_Save_Manager
         }
 
         private string GetMostRecentSaveFile()
-        {
-            string saveDirectory = Path.Combine(Application.StartupPath, "save");
-            string[] saveFiles = Directory.GetFiles(saveDirectory, "*.sl2");
+        {   //user directory 변화 / getusergamename 으로 얻고 / startup으로 가서 겜폴더 찾기
+            string gameSaveFolder = GetSaveDirectory(GetUserGameName(userDirectory)); 
+            string[] saveFiles = Directory.GetFiles(gameSaveFolder, "*.sl2");
 
             if (saveFiles.Length > 0)
             {
@@ -211,22 +223,41 @@ namespace darksouls3_Save_Manager
             return null;
         }
 
+        private string GetUserGameName(string directory) //예외설정 필요.
+        {
+            if (directory.Contains("DarkSoulsIII"))
+            {
+                return "DarkSoulsIII";
+            }
+            else if (directory.Contains("Sekiro"))
+            {
+                return "Sekiro";
+            }
+            else if (directory.Contains("EldenRing"))
+            {
+                return "EldenRing";
+            }
+            return "UnknownGame";
+        }
         private void btnGame1_Click(object sender, EventArgs e)
         {
             userDirectory = GetUserDirectory("DarkSoulsIII");
             SetTargetFileName("DS30000.sl2");
+            string gameSaveFolder = GetSaveDirectory("DarkSoulsIII");
         }
 
         private void btnGame2_Click(object sender, EventArgs e)
         {
             userDirectory = GetUserDirectory("Sekiro");
             SetTargetFileName("S0000.sl2");
+            string gameSaveFolder = GetSaveDirectory("Sekiro");
         }
 
         private void btnGame3_Click(object sender, EventArgs e)
         {
             userDirectory = GetUserDirectory("EldenRing");
             SetTargetFileName("ER0000.sl2");
+            string gameSaveFolder = GetSaveDirectory("EldenRing");
         }
     }
 }
