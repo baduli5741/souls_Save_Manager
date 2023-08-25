@@ -123,6 +123,49 @@ namespace souls_Save_Manager
             }
         }
 
+        private void SwapSelectedFileWithTarget()
+        {
+            try
+            {
+                
+                if (GetUserGameName(userDirectory) == null)
+                { 
+                    MessageBox.Show("The directory does not exist.\nYou should execute the game at least once", "Directory Not Found", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+                
+                string selectedFileName = lvFileList.SelectedItems[0].Text; //save폴더에서 내생각에 path라서 문제인가. file자체가아니라
+                string selectedFilePath = Path.Combine(GetSaveDirectory(GetUserGameName(userDirectory)), selectedFileName);
+                string targetFile = Path.Combine(userDirectory, targetFileName); // 게임폴더
+
+                Console.WriteLine("Selected File Path: " + selectedFilePath);
+                Console.WriteLine("Target File Path: " + targetFile);
+
+                if (File.Exists(targetFile))
+                {
+                    string newFileName = "swapped_" + DateTime.Now.ToString("yyyyMMddHHmmss") + Path.GetExtension(targetFile);//어차피 sl2라서 그냥 해도됨 sl2
+                    string saveDirectory = GetSaveDirectory(GetUserGameName(userDirectory)); // 게임별 저장 디렉토리 가져오기
+                    string backupPath = Path.Combine(saveDirectory, newFileName);
+
+                    File.Copy(targetFile, backupPath); //그래 이건 ok
+                    File.Copy(selectedFilePath, targetFile, true); //이게 문제일지도.
+
+                    MessageBox.Show("File swapped successfully.", "Swap Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    PopulateTargetFileList(userDirectory);
+                    PopulateSaveFileList();
+                }
+                else
+                {
+                    MessageBox.Show("Target file not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error during swapping files: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+
         private void btnFind_Click(object sender, EventArgs e)
         {
             try
@@ -210,6 +253,21 @@ namespace souls_Save_Manager
             }
         }
 
+        private void btnSwap_Click(object sender, EventArgs e)
+        {
+            if (lvFileList.SelectedItems.Count > 0)
+            {
+                SwapSelectedFileWithTarget();
+                PopulateSaveFileList();
+                PopulateTargetFileList(userDirectory);
+            }
+            else
+            {
+                MessageBox.Show("Please select a file to swap.", "Selection Required", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+
         private string GetMostRecentSaveFile()
         {   //user directory 변화 / getusergamename 으로 얻고 / startup으로 가서 겜폴더 찾기
             string gameSaveFolder = GetSaveDirectory(GetUserGameName(userDirectory)); 
@@ -224,8 +282,10 @@ namespace souls_Save_Manager
             return null;
         }
 
-        private string GetUserGameName(string directory) //예외설정 필요.
+        private string GetUserGameName(string directory) //예외설정 필요. 없는데 select swap 하기 + 없는데 QS하기.
         {
+
+
             if (directory.Contains("DarkSoulsIII"))
             {
                 return "DarkSoulsIII";

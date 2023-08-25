@@ -38,14 +38,15 @@
             this.btnGame1 = new System.Windows.Forms.Button();
             this.btnGame2 = new System.Windows.Forms.Button();
             this.btnGame3 = new System.Windows.Forms.Button();
+            this.btnSwap = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnFind
             // 
-            this.btnFind.Location = new System.Drawing.Point(75, 280);
+            this.btnFind.Location = new System.Drawing.Point(86, 350);
             this.btnFind.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnFind.Name = "btnFind";
-            this.btnFind.Size = new System.Drawing.Size(100, 25);
+            this.btnFind.Size = new System.Drawing.Size(114, 31);
             this.btnFind.TabIndex = 0;
             this.btnFind.Text = "Find my save";
             this.btnFind.UseVisualStyleBackColor = true;
@@ -53,18 +54,18 @@
             // 
             // txtFilePath
             // 
-            this.txtFilePath.Location = new System.Drawing.Point(200, 280);
+            this.txtFilePath.Location = new System.Drawing.Point(229, 350);
             this.txtFilePath.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtFilePath.Name = "txtFilePath";
-            this.txtFilePath.Size = new System.Drawing.Size(267, 21);
+            this.txtFilePath.Size = new System.Drawing.Size(305, 25);
             this.txtFilePath.TabIndex = 1;
             // 
             // btnDuplicate
             // 
-            this.btnDuplicate.Location = new System.Drawing.Point(530, 280);
+            this.btnDuplicate.Location = new System.Drawing.Point(606, 350);
             this.btnDuplicate.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnDuplicate.Name = "btnDuplicate";
-            this.btnDuplicate.Size = new System.Drawing.Size(100, 25);
+            this.btnDuplicate.Size = new System.Drawing.Size(114, 31);
             this.btnDuplicate.TabIndex = 2;
             this.btnDuplicate.Text = "Duplicate";
             this.btnDuplicate.UseVisualStyleBackColor = true;
@@ -73,10 +74,10 @@
             // lvFileList
             // 
             this.lvFileList.HideSelection = false;
-            this.lvFileList.Location = new System.Drawing.Point(412, 74);
+            this.lvFileList.Location = new System.Drawing.Point(471, 92);
             this.lvFileList.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.lvFileList.Name = "lvFileList";
-            this.lvFileList.Size = new System.Drawing.Size(240, 160);
+            this.lvFileList.Size = new System.Drawing.Size(274, 199);
             this.lvFileList.TabIndex = 3;
             this.lvFileList.UseCompatibleStateImageBehavior = false;
             this.lvFileList.View = System.Windows.Forms.View.Details;
@@ -84,20 +85,20 @@
             // lvTargetFiles
             // 
             this.lvTargetFiles.HideSelection = false;
-            this.lvTargetFiles.Location = new System.Drawing.Point(50, 74);
+            this.lvTargetFiles.Location = new System.Drawing.Point(57, 92);
             this.lvTargetFiles.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.lvTargetFiles.Name = "lvTargetFiles";
-            this.lvTargetFiles.Size = new System.Drawing.Size(240, 160);
+            this.lvTargetFiles.Size = new System.Drawing.Size(274, 199);
             this.lvTargetFiles.TabIndex = 4;
             this.lvTargetFiles.UseCompatibleStateImageBehavior = false;
             this.lvTargetFiles.View = System.Windows.Forms.View.Details;
             // 
             // btnQuickSwap
             // 
-            this.btnQuickSwap.Location = new System.Drawing.Point(530, 315);
+            this.btnQuickSwap.Location = new System.Drawing.Point(606, 394);
             this.btnQuickSwap.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnQuickSwap.Name = "btnQuickSwap";
-            this.btnQuickSwap.Size = new System.Drawing.Size(100, 25);
+            this.btnQuickSwap.Size = new System.Drawing.Size(114, 31);
             this.btnQuickSwap.TabIndex = 5;
             this.btnQuickSwap.Text = "Quick swap";
             this.btnQuickSwap.UseVisualStyleBackColor = true;
@@ -105,10 +106,10 @@
             // 
             // btnGame1
             // 
-            this.btnGame1.Location = new System.Drawing.Point(22, 23);
+            this.btnGame1.Location = new System.Drawing.Point(25, 29);
             this.btnGame1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnGame1.Name = "btnGame1";
-            this.btnGame1.Size = new System.Drawing.Size(90, 30);
+            this.btnGame1.Size = new System.Drawing.Size(103, 38);
             this.btnGame1.TabIndex = 6;
             this.btnGame1.Text = "DarkSoulsIII";
             this.btnGame1.UseVisualStyleBackColor = true;
@@ -116,10 +117,10 @@
             // 
             // btnGame2
             // 
-            this.btnGame2.Location = new System.Drawing.Point(124, 23);
+            this.btnGame2.Location = new System.Drawing.Point(142, 29);
             this.btnGame2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnGame2.Name = "btnGame2";
-            this.btnGame2.Size = new System.Drawing.Size(90, 30);
+            this.btnGame2.Size = new System.Drawing.Size(103, 38);
             this.btnGame2.TabIndex = 7;
             this.btnGame2.Text = "Sekiro";
             this.btnGame2.UseVisualStyleBackColor = true;
@@ -127,20 +128,31 @@
             // 
             // btnGame3
             // 
-            this.btnGame3.Location = new System.Drawing.Point(226, 23);
+            this.btnGame3.Location = new System.Drawing.Point(258, 29);
             this.btnGame3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnGame3.Name = "btnGame3";
-            this.btnGame3.Size = new System.Drawing.Size(90, 30);
+            this.btnGame3.Size = new System.Drawing.Size(103, 38);
             this.btnGame3.TabIndex = 8;
             this.btnGame3.Text = "EldenRing";
             this.btnGame3.UseVisualStyleBackColor = true;
             this.btnGame3.Click += new System.EventHandler(this.btnGame3_Click);
             // 
+            // btnSwap
+            // 
+            this.btnSwap.Location = new System.Drawing.Point(337, 199);
+            this.btnSwap.Name = "btnSwap";
+            this.btnSwap.Size = new System.Drawing.Size(114, 31);
+            this.btnSwap.TabIndex = 9;
+            this.btnSwap.Text = "Swap";
+            this.btnSwap.UseVisualStyleBackColor = true;
+            this.btnSwap.Click += new System.EventHandler(this.btnSwap_Click);
+            // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(700, 360);
+            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnSwap);
             this.Controls.Add(this.btnGame3);
             this.Controls.Add(this.btnGame2);
             this.Controls.Add(this.btnGame1);
@@ -170,6 +182,7 @@
         private System.Windows.Forms.Button btnGame1;
         private System.Windows.Forms.Button btnGame2;
         private System.Windows.Forms.Button btnGame3;
+        private System.Windows.Forms.Button btnSwap;
     }
 }
 
