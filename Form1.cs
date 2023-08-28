@@ -97,7 +97,7 @@ namespace souls_Save_Manager
                 }
                 else
                 {
-                    MessageBox.Show("The directory does not exist.\nYou should execute the game at least once", "Directory Not Found", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("2The directory does not exist.\nYou should execute the game at least once", "Directory Not Found", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
             catch (Exception ex)
@@ -130,7 +130,7 @@ namespace souls_Save_Manager
                 
                 if (GetUserGameName(userDirectory) == null)
                 { 
-                    MessageBox.Show("The directory does not exist.\nYou should execute the game at least once", "Directory Not Found", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("3The directory does not exist.\nYou should execute the game at least once", "Directory Not Found", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
                 
@@ -168,11 +168,13 @@ namespace souls_Save_Manager
 
         private void btnFind_Click(object sender, EventArgs e)
         {
+            lvTargetFiles.Items.Clear();
+            lvFileList.Items.Clear();
             try
             {
                 if (!Directory.Exists(userDirectory))
                 {
-                    MessageBox.Show("The directory does not exist.\nYou should execute the game at least once", "Directory Not Found", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("1The directory does not exist.\nYou should execute the game at least once", "Directory Not Found", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
 
@@ -188,16 +190,17 @@ namespace souls_Save_Manager
 
                     PopulateTargetFileList(userDirectory);
                     btnDuplicate.Visible = true;
-                    PopulateSaveFileList();
+                    PopulateSaveFileList(); //여기서 찾아서 그런듯. 
                 }
                 else
                 {
                     txtFilePath.Text = "File not found.";
+                    PopulateSaveFileList();
                 }
             }
             catch (Exception ex)
             {
-                txtFilePath.Text = "Error: " + ex.Message;
+                txtFilePath.Text = "File not found.";  //txtFilePath.Text = "Error: " + ex.Message;
             }
         }
 
