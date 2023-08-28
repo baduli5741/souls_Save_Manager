@@ -134,3 +134,4 @@ namespace darksouls3_Save_Manager
         }
     }
 }
+//만약 아이디 메일 바꾸면 어떻게 될지
