@@ -13,10 +13,11 @@ namespace souls_Save_Manager
         {
             InitializeComponent();
 
-            userDirectory = GetUserDirectory("DarkSoulsIII");
-            SetTargetFileName("DS30000.sl2");
+            //userDirectory = GetUserDirectory("DarkSoulsIII");
+            //SetTargetFileName("DS30000.sl2");
             btnDuplicate.Visible = false;
             btnFind.Visible = false;
+            btnQuickSwap.Visible = false;
             InitializeListViewColumns();
             //PopulateSaveFileList();
         }
@@ -97,7 +98,7 @@ namespace souls_Save_Manager
                 }
                 else
                 {
-                    MessageBox.Show("2The directory does not exist.\nYou should execute the game at least once", "Directory Not Found", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("The directory does not exist.\nYou should execute the game at least once", "Directory Not Found", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
             catch (Exception ex)
@@ -130,7 +131,7 @@ namespace souls_Save_Manager
                 
                 if (GetUserGameName(userDirectory) == null)
                 { 
-                    MessageBox.Show("3The directory does not exist.\nYou should execute the game at least once", "Directory Not Found", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("The directory does not exist.\nYou should execute the game at least once", "Directory Not Found", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
                 
@@ -174,8 +175,10 @@ namespace souls_Save_Manager
             {
                 if (!Directory.Exists(userDirectory))
                 {
-                    MessageBox.Show("1The directory does not exist.\nYou should execute the game at least once", "Directory Not Found", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    return;
+                    btnQuickSwap.Visible = false;
+                    btnDuplicate.Visible = false;
+                    MessageBox.Show("The directory does not exist.\nYou should execute the game at least once", "Directory Not Found", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    //return;
                 }
 
                 string[] files = Directory.GetFiles(userDirectory, targetFileName, SearchOption.AllDirectories);
@@ -190,6 +193,7 @@ namespace souls_Save_Manager
 
                     PopulateTargetFileList(userDirectory);
                     btnDuplicate.Visible = true;
+                    btnQuickSwap.Visible = true;
                     PopulateSaveFileList(); //여기서 찾아서 그런듯. 
                 }
                 else
@@ -285,7 +289,7 @@ namespace souls_Save_Manager
             return null;
         }
 
-        private string GetUserGameName(string directory) //예외설정 필요. 없는데 select swap 하기 + 없는데 QS하기.
+        private string GetUserGameName(string directory) //예외설정 필요. 없는데 duplicate 하기/ select swap 하기 + 없는데 QS하기.
         {
 
 
