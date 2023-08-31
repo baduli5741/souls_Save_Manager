@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32228.430
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "darksouls3_Save_Manager", "darksouls3_Save_Manager.csproj", "{30D44E68-F45D-4160-9F61-BACA3D563122}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "souls_Save_Manager", "souls_Save_Manager.csproj", "{30D44E68-F45D-4160-9F61-BACA3D563122}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
