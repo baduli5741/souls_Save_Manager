@@ -13,10 +13,18 @@ namespace souls_Save_Manager
         {
             InitializeComponent();
 
-            userDirectory = GetUserDirectory("DarkSoulsIII");
-            SetTargetFileName("DS30000.sl2");
+            comboBoxGames.Items.Add("DarkSoulsIII");
+            comboBoxGames.Items.Add("Sekiro");
+            comboBoxGames.Items.Add("EldenRing");
+            comboBoxGames.Items.Add("DarkSoulsII");
+            comboBoxGames.Items.Add("ArmoredCore6");
+            comboBoxGames.Items.Add("");
+            // DarkSouls	DRAKS0005.sl2 C:\Users\ '컴퓨터이름' \Documents\NBGI\DARK SOULS REMASTERED\~~~~~ \내 문서\NBGI\Dark Souls\ 
+            //userDirectory = GetUserDirectory("DarkSoulsIII");
+            //SetTargetFileName("DS30000.sl2");
             btnDuplicate.Visible = false;
             btnFind.Visible = false;
+            btnQuickSwap.Visible = false;
             InitializeListViewColumns();
             //PopulateSaveFileList();
         }
@@ -234,11 +242,43 @@ namespace souls_Save_Manager
             {
                 return "Sekiro";
             }
+            else if (directory.Contains("DarkSoulsII"))
+            {
+                return "DarkSoulsII";
+            }
+            else if (directory.Contains("ArmoredCore6"))
+            {
+                return "ArmoredCore6";
+            }
+            else if (directory.Contains(""))
+            {
+                return "";
+            }
             else if (directory.Contains("EldenRing"))
             {
                 return "EldenRing";
             }
             return "UnknownGame";
+        }
+        private string GetTargetFileNameForGame(string gameName)
+        {
+            switch (gameName)
+            {
+                case "DarkSoulsIII":
+                    return "DS30000.sl2";
+                case "Sekiro":
+                    return "S0000.sl2";
+                case "EldenRing":
+                    return "ER0000.sl2";
+                case "DarkSoulsII":
+                    return "DS20000.sl2";
+                case "ArmoredCore6":
+                    return "AC60000.sl2";
+                case "":
+                    return "0000.sl2";
+                default:
+                    return "";
+            }
         }
         private void btnGame1_Click(object sender, EventArgs e)
         {
@@ -261,6 +301,14 @@ namespace souls_Save_Manager
             userDirectory = GetUserDirectory("EldenRing");
             SetTargetFileName("ER0000.sl2");
             string gameSaveFolder = GetSaveDirectory("EldenRing");
+            btnFind_Click(sender, e);
+        }
+
+        private void comboBoxGames_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string selectedGame = comboBoxGames.SelectedItem.ToString();
+            userDirectory = GetUserDirectory(selectedGame);
+            SetTargetFileName(GetTargetFileNameForGame(selectedGame));
             btnFind_Click(sender, e);
         }
     }

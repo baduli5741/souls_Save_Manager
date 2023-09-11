@@ -38,6 +38,8 @@
             this.btnGame1 = new System.Windows.Forms.Button();
             this.btnGame2 = new System.Windows.Forms.Button();
             this.btnGame3 = new System.Windows.Forms.Button();
+            this.btnSwap = new System.Windows.Forms.Button();
+            this.comboBoxGames = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // btnFind
@@ -136,11 +138,32 @@
             this.btnGame3.UseVisualStyleBackColor = true;
             this.btnGame3.Click += new System.EventHandler(this.btnGame3_Click);
             // 
+            // btnSwap
+            // 
+            this.btnSwap.Location = new System.Drawing.Point(337, 199);
+            this.btnSwap.Name = "btnSwap";
+            this.btnSwap.Size = new System.Drawing.Size(114, 31);
+            this.btnSwap.TabIndex = 9;
+            this.btnSwap.Text = "Swap";
+            this.btnSwap.UseVisualStyleBackColor = true;
+            this.btnSwap.Click += new System.EventHandler(this.btnSwap_Click);
+            // 
+            // comboBoxGames
+            // 
+            this.comboBoxGames.FormattingEnabled = true;
+            this.comboBoxGames.Location = new System.Drawing.Point(530, 29);
+            this.comboBoxGames.Name = "comboBoxGames";
+            this.comboBoxGames.Size = new System.Drawing.Size(121, 23);
+            this.comboBoxGames.TabIndex = 10;
+            this.comboBoxGames.SelectedIndexChanged += new System.EventHandler(this.comboBoxGames_SelectedIndexChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(700, 360);
+            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.comboBoxGames);
+            this.Controls.Add(this.btnSwap);
             this.Controls.Add(this.btnGame3);
             this.Controls.Add(this.btnGame2);
             this.Controls.Add(this.btnGame1);
@@ -170,6 +193,8 @@
         private System.Windows.Forms.Button btnGame1;
         private System.Windows.Forms.Button btnGame2;
         private System.Windows.Forms.Button btnGame3;
+        private System.Windows.Forms.Button btnSwap;
+        private System.Windows.Forms.ComboBox comboBoxGames;
     }
 }
 
