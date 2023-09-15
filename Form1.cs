@@ -12,14 +12,17 @@ namespace souls_Save_Manager
         public Form1()
         {
             InitializeComponent();
-
-            //userDirectory = GetUserDirectory("DarkSoulsIII");
-            //SetTargetFileName("DS30000.sl2");
+            comboBoxGames.Items.Add("Dark Souls");
+            comboBoxGames.Items.Add("DarkSoulsII");
+            comboBoxGames.Items.Add("DarkSoulsIII");
+            comboBoxGames.Items.Add("DARK SOULS REMASTERED");
+            comboBoxGames.Items.Add("Sekiro");
+            comboBoxGames.Items.Add("EldenRing");
+            comboBoxGames.Items.Add("ArmoredCore6");
+            //comboBoxGames.Items.Add("");
             btnDuplicate.Visible = false;
-            btnFind.Visible = false;
             btnQuickSwap.Visible = false;
             InitializeListViewColumns();
-            //PopulateSaveFileList();
         }
 
         private void InitializeListViewColumns()
@@ -42,13 +45,33 @@ namespace souls_Save_Manager
         {
             try
             {
-                string roamingPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), gameName);
-                if (Directory.Exists(roamingPath))
+                if (gameName == "DARK SOULS REMASTERED" || gameName == "Dark Souls")
                 {
-                    string[] subDirectories = Directory.GetDirectories(roamingPath);
-                    if (subDirectories.Length > 0)
+                    // "NBGI" 폴더 안의 해당 게임 폴더 경로를 가져옵니다.
+                    string documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                    string nbgiPath = Path.Combine(documentsPath, "NBGI");
+
+                    if (Directory.Exists(nbgiPath))
                     {
-                        return subDirectories[0];
+                        string[] gameFolders = Directory.GetDirectories(nbgiPath, gameName, SearchOption.TopDirectoryOnly);
+
+                        if (gameFolders.Length > 0)
+                        {
+                            // "gameName"에 해당하는 폴더 중 첫 번째 폴더 경로 반환
+                            return gameFolders[0];
+                        }
+                    }
+                }
+                else
+                {
+                    string roamingPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), gameName);
+                    if (Directory.Exists(roamingPath))
+                    {
+                        string[] subDirectories = Directory.GetDirectories(roamingPath);
+                        if (subDirectories.Length > 0)
+                        {
+                            return subDirectories[0];
+                        }
                     }
                 }
             }
@@ -106,7 +129,7 @@ namespace souls_Save_Manager
                 MessageBox.Show("Error populating target file list: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        //일단 save 파일 버튼 클릭마다 변경되게 해야하고
+
         private void PopulateSaveFileList()
         {
             lvFileList.Items.Clear();
@@ -148,8 +171,8 @@ namespace souls_Save_Manager
                     string saveDirectory = GetSaveDirectory(GetUserGameName(userDirectory)); // 게임별 저장 디렉토리 가져오기
                     string backupPath = Path.Combine(saveDirectory, newFileName);
 
-                    File.Copy(targetFile, backupPath); //그래 이건 ok
-                    File.Copy(selectedFilePath, targetFile, true); //이게 문제일지도.
+                    File.Copy(targetFile, backupPath);
+                    File.Copy(selectedFilePath, targetFile, true);
 
                     MessageBox.Show("File swapped successfully.", "Swap Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     PopulateTargetFileList(userDirectory);
@@ -194,7 +217,7 @@ namespace souls_Save_Manager
                     PopulateTargetFileList(userDirectory);
                     btnDuplicate.Visible = true;
                     btnQuickSwap.Visible = true;
-                    PopulateSaveFileList(); //여기서 찾아서 그런듯. 
+                    PopulateSaveFileList(); 
                 }
                 else
                 {
@@ -240,7 +263,7 @@ namespace souls_Save_Manager
                     return;
                 }
 
-                string targetFile = Path.Combine(userDirectory, targetFileName);//외부 내부 차이? 생각 아니 if를 없애도 되었나?
+                string targetFile = Path.Combine(userDirectory, targetFileName);
                 string gameBackupFolder = GetSaveDirectory(GetUserGameName(userDirectory) + "_Backup");
 
                 string newFileName = "QS_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".sl2";
@@ -274,7 +297,6 @@ namespace souls_Save_Manager
             }
         }
 
-
         private string GetMostRecentSaveFile()
         {   //user directory 변화 / getusergamename 으로 얻고 / startup으로 가서 겜폴더 찾기
             string gameSaveFolder = GetSaveDirectory(GetUserGameName(userDirectory)); 
@@ -289,7 +311,7 @@ namespace souls_Save_Manager
             return null;
         }
 
-        private string GetUserGameName(string directory) //예외설정 필요. 없는데 duplicate 하기/ select swap 하기 + 없는데 QS하기.
+        private string GetUserGameName(string directory) 
         {
 
 
@@ -301,12 +323,43 @@ namespace souls_Save_Manager
             {
                 return "Sekiro";
             }
+            else if (directory.Contains("DarkSoulsII"))
+            {
+                return "DarkSoulsII";
+            }
+            else if (directory.Contains("ArmoredCore6"))
+            {
+                return "ArmoredCore6";
+            }
             else if (directory.Contains("EldenRing"))
             {
                 return "EldenRing";
             }
             return "UnknownGame";
         }
+        private string GetTargetFileNameForGame(string gameName)
+        {
+            switch (gameName)
+            {
+                case "DarkSoulsIII":
+                    return "DS30000.sl2";
+                case "Sekiro":
+                    return "S0000.sl2";
+                case "EldenRing":
+                    return "ER0000.sl2";
+                case "DarkSoulsII":
+                    return "DS20000.sl2";
+                case "ArmoredCore6":
+                    return "AC60000.sl2";
+                case "DARK SOULS REMASTERED":
+                    return "DRAKS0005.sl2";
+                case "Dark Souls":
+                    return "DRAKS0005.sl2";
+                default:
+                    return "";
+            }
+        }
+        
         private void btnGame1_Click(object sender, EventArgs e)
         {
             userDirectory = GetUserDirectory("DarkSoulsIII");
@@ -328,6 +381,14 @@ namespace souls_Save_Manager
             userDirectory = GetUserDirectory("EldenRing");
             SetTargetFileName("ER0000.sl2");
             string gameSaveFolder = GetSaveDirectory("EldenRing");
+            btnFind_Click(sender, e);
+        }
+
+        private void comboBoxGames_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string selectedGame = comboBoxGames.SelectedItem.ToString();
+            userDirectory = GetUserDirectory(selectedGame);
+            SetTargetFileName(GetTargetFileNameForGame(selectedGame));
             btnFind_Click(sender, e);
         }
     }
