@@ -311,6 +311,106 @@ namespace souls_Save_Manager
             return null;
         }
 
+        private void lvFileList_MouseClick(object sender, MouseEventArgs e)
+        {
+            // 마우스 오른쪽 버튼을 클릭한 경우
+            if (e.Button == MouseButtons.Right)
+            {
+                // 선택된 항목이 있는지 확인
+                if (lvFileList.SelectedItems.Count > 0)
+                {
+                    // 선택된 항목의 텍스트 (파일 이름) 가져오기
+                    string selectedFileName = lvFileList.SelectedItems[0].Text;
+
+                    // 사용자에게 새 파일 이름을 입력받는 대화 상자 표시
+                    string newFileName = PromptForNewFileName(selectedFileName);
+
+                    // 사용자가 입력한 새 파일 이름이 null이 아닌 경우
+                    if (!string.IsNullOrEmpty(newFileName))
+                    {
+                        // 파일 이름 변경
+                        RenameFile(selectedFileName, newFileName);
+
+                        // ListView 업데이트
+                        lvFileList.SelectedItems[0].Text = newFileName;
+                    }
+                }
+            }
+        }
+
+        // 사용자에게 새 파일 이름을 입력받는 대화 상자를 표시합니다.
+        private string PromptForNewFileName(string currentFileName)
+        {
+            // 새 폼 생성
+            Form promptForm = new Form()
+            {
+                Width = 400,
+                Height = 150,
+                FormBorderStyle = FormBorderStyle.FixedDialog,
+                Text = "Rename File"
+            };
+
+            // 레이블 추가
+            Label label = new Label()
+            {
+                Left = 50,
+                Top = 20,
+                Text = "Enter new file name:"
+            };
+
+            // 텍스트 상자 추가
+            TextBox textBox = new TextBox()
+            {
+                Left = 50,
+                Top = 50,
+                Width = 300
+            };
+
+            // 확인 버튼 추가
+            Button confirmation = new Button()
+            {
+                Text = "OK",
+                Left = 250,
+                Width = 100,
+                Top = 80
+            };
+
+            // 확인 버튼 클릭 시 폼을 닫고 입력한 파일 이름을 반환
+            confirmation.Click += (sender, e) => { promptForm.Close(); };
+
+            // 폼에 컨트롤들 추가
+            promptForm.Controls.Add(confirmation);
+            promptForm.Controls.Add(label);
+            promptForm.Controls.Add(textBox);
+
+            // 폼 열기
+            promptForm.ShowDialog();
+
+            // 사용자가 입력한 새 파일 이름을 반환
+            return textBox.Text;
+        }
+
+        // 파일 이름 변경
+        private void RenameFile(string oldFileName, string newFileName)
+        {
+            try
+            {
+                // 파일 경로를 가져옵니다.
+                string sourceFilePath = Path.Combine(GetSaveDirectory(GetUserGameName(userDirectory)), oldFileName);
+                string targetFilePath = Path.Combine(GetSaveDirectory(GetUserGameName(userDirectory)), newFileName);
+
+                // 파일 이름 변경
+                File.Move(sourceFilePath, targetFilePath);
+
+                MessageBox.Show("File renamed successfully.", "Rename Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error renaming file: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+
         private string GetUserGameName(string directory) 
         {
 

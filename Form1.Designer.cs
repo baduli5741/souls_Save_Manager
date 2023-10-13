@@ -68,6 +68,7 @@
             this.lvFileList.TabIndex = 3;
             this.lvFileList.UseCompatibleStateImageBehavior = false;
             this.lvFileList.View = System.Windows.Forms.View.Details;
+            this.lvFileList.MouseClick += new System.Windows.Forms.MouseEventHandler(this.lvFileList_MouseClick);
             // 
             // lvTargetFiles
             // 
