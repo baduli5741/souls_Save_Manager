@@ -19,6 +19,7 @@ namespace souls_Save_Manager
             comboBoxGames.Items.Add("Sekiro");
             comboBoxGames.Items.Add("EldenRing");
             comboBoxGames.Items.Add("ArmoredCore6");
+            comboBoxGames.Items.Add("WEBFISHING");
             //comboBoxGames.Items.Add("");
             btnDuplicate.Visible = false;
             btnQuickSwap.Visible = false;
@@ -27,17 +28,17 @@ namespace souls_Save_Manager
 
         private void InitializeListViewColumns()
         {
-            lvFileList.Columns.Add("File Name", 150);
+            lvFileList.Columns.Add("File Name", 180);
             lvFileList.Columns.Add("Last Modified", 150);
 
-            lvTargetFiles.Columns.Add("File Name", 150);
+            lvTargetFiles.Columns.Add("File Name", 180);
             lvTargetFiles.Columns.Add("Last Modified", 150);
         }
 
         private void AddListViewItem(ListView listView, FileInfo fileInfo)
         {
             ListViewItem item = new ListViewItem(fileInfo.Name);
-            item.SubItems.Add(fileInfo.LastWriteTime.ToString("yyyy-MM-dd HH:mm:ss"));
+            item.SubItems.Add(fileInfo.LastWriteTime.ToString("yyyy-MM-dd HH:mm"));
             listView.Items.Add(item);
         }
 
@@ -60,6 +61,20 @@ namespace souls_Save_Manager
                             // "gameName"에 해당하는 폴더 중 첫 번째 폴더 경로 반환
                             return gameFolders[0];
                         }
+                    }
+                }
+
+                else if (gameName == "WEBFISHING") // WebFishing 경로 탐색 추가
+                {
+                    string godotPath = Path.Combine(Path.Combine(
+                    Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Godot"),
+                    "app_userdata"),
+                    "webfishing_2_newver");
+
+
+                    if (Directory.Exists(godotPath))
+                    {
+                        return godotPath;
                     }
                 }
                 else
@@ -167,7 +182,7 @@ namespace souls_Save_Manager
 
                 if (File.Exists(targetFile))
                 {
-                    string newFileName = "swapped_" + DateTime.Now.ToString("yyyyMMddHHmmss") + Path.GetExtension(targetFile);//어차피 sl2라서 그냥 해도됨 sl2
+                    string newFileName = "swapped_" + DateTime.Now.ToString("yyMMddHHmm") + Path.GetExtension(targetFile);//어차피 sl2라서 이젠 아니다... 
                     string saveDirectory = GetSaveDirectory(GetUserGameName(userDirectory)); // 게임별 저장 디렉토리 가져오기
                     string backupPath = Path.Combine(saveDirectory, newFileName);
 
@@ -216,7 +231,7 @@ namespace souls_Save_Manager
 
                     PopulateTargetFileList(userDirectory);
                     btnDuplicate.Visible = true;
-                    btnQuickSwap.Visible = true;
+                    btnQuickSwap.Visible = false;
                     PopulateSaveFileList(); 
                 }
                 else
@@ -235,21 +250,34 @@ namespace souls_Save_Manager
         {
             try
             {
-                string sourceFile = txtFilePath.Text.Split('\n')[1].Trim();
-                string gameSaveFolder = GetSaveDirectory(GetUserGameName(userDirectory));
-                string newFileName = Path.GetFileNameWithoutExtension(sourceFile) + "_" + DateTime.Now.ToString("yyyyMMddHHmmss") + Path.GetExtension(sourceFile);
-                string targetFile = Path.Combine(gameSaveFolder, newFileName);
- 
-                File.Copy(sourceFile, targetFile);
+                // 선택된 파일 가져오기
+                if (lvTargetFiles.SelectedItems.Count > 0)
+                {
+                    string selectedFileName = lvTargetFiles.SelectedItems[0].Text;
+                    string sourceFile = Path.Combine(userDirectory, selectedFileName);
 
-                MessageBox.Show("File duplicated successfully.", "Duplicate Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                PopulateSaveFileList();
+                    // 저장 디렉토리와 새 파일 이름 생성
+                    string gameSaveFolder = GetSaveDirectory(GetUserGameName(userDirectory));
+                    string newFileName = Path.GetFileNameWithoutExtension(sourceFile) + "_" + DateTime.Now.ToString("yyMMddHHmm") + Path.GetExtension(sourceFile);
+                    string targetFile = Path.Combine(gameSaveFolder, newFileName);
+
+                    // 복사 실행
+                    File.Copy(sourceFile, targetFile);
+
+                    MessageBox.Show("File duplicated successfully.", "Duplicate Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    PopulateSaveFileList();
+                }
+                else
+                {
+                    MessageBox.Show("Please select a file to duplicate.", "Selection Required", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error duplicating file: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
 
         private void btnQuickSwap_Click(object sender, EventArgs e)
         {
@@ -264,9 +292,9 @@ namespace souls_Save_Manager
                 }
 
                 string targetFile = Path.Combine(userDirectory, targetFileName);
-                string gameBackupFolder = GetSaveDirectory(GetUserGameName(userDirectory) + "_Backup");
+                string gameBackupFolder = GetSaveDirectory(GetUserGameName(userDirectory));
 
-                string newFileName = "QS_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".sl2";
+                string newFileName = "QS_" + DateTime.Now.ToString("yyMMddHHmm") + Path.GetExtension(targetFile);    //이거
                 string backupPath = Path.Combine(gameBackupFolder, newFileName);
 
                 File.Copy(targetFile, backupPath);
@@ -282,7 +310,48 @@ namespace souls_Save_Manager
                 MessageBox.Show("Error during quick swap: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+        private void btnSwap_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (lvTargetFiles.SelectedItems.Count > 0 && lvFileList.SelectedItems.Count > 0)
+                {
+                    // 선택된 대상 파일과 저장 파일 가져오기
+                    string targetFileName = lvTargetFiles.SelectedItems[0].Text;
+                    string saveFileName = lvFileList.SelectedItems[0].Text;
 
+                    string targetFilePath = Path.Combine(userDirectory, targetFileName);
+                    string saveFilePath = Path.Combine(GetSaveDirectory(GetUserGameName(userDirectory)), saveFileName);
+
+                    // 백업 생성 및 스왑 실행
+                    if (File.Exists(targetFilePath) && File.Exists(saveFilePath))
+                    {
+                        string backupPath = Path.Combine(GetSaveDirectory(GetUserGameName(userDirectory)), "backup_" + DateTime.Now.ToString("yyMMddHHmm") + Path.GetExtension(targetFilePath));
+                        File.Copy(targetFilePath, backupPath); // 대상 파일 백업
+
+                        File.Copy(saveFilePath, targetFilePath, true); // 저장 파일을 대상 위치로 복사
+                        File.Copy(backupPath, saveFilePath, true);     // 백업을 저장 위치로 복사
+
+                        MessageBox.Show("Files swapped successfully.", "Swap Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        PopulateTargetFileList(userDirectory);
+                        PopulateSaveFileList();
+                    }
+                    else
+                    {
+                        MessageBox.Show("One or both files do not exist.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Please select a file from both lists to swap.", "Selection Required", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error during swapping files: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        /*
         private void btnSwap_Click(object sender, EventArgs e)
         {
             if (lvFileList.SelectedItems.Count > 0)
@@ -296,11 +365,11 @@ namespace souls_Save_Manager
                 MessageBox.Show("Please select a file to swap.", "Selection Required", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
-
+        */
         private string GetMostRecentSaveFile()
         {   //user directory 변화 / getusergamename 으로 얻고 / startup으로 가서 겜폴더 찾기
             string gameSaveFolder = GetSaveDirectory(GetUserGameName(userDirectory)); 
-            string[] saveFiles = Directory.GetFiles(gameSaveFolder, "*.sl2");
+            string[] saveFiles = Directory.GetFiles(gameSaveFolder); //, "*.sl2 삭제 "
 
             if (saveFiles.Length > 0)
             {
@@ -435,6 +504,10 @@ namespace souls_Save_Manager
             {
                 return "EldenRing";
             }
+            else if (directory.Contains("webfishing_2_newver"))
+            {
+                return "WEBFISHING";
+            }
             return "UnknownGame";
         }
         private string GetTargetFileNameForGame(string gameName)
@@ -455,6 +528,8 @@ namespace souls_Save_Manager
                     return "DRAKS0005.sl2";
                 case "Dark Souls":
                     return "DRAKS0005.sl2";
+                case "WEBFISHING":
+                    return "webfishing_save_slot_0.sav";
                 default:
                     return "";
             }
