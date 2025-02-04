@@ -41,7 +41,7 @@
             // 
             // txtFilePath
             // 
-            this.txtFilePath.Location = new System.Drawing.Point(220, 308);
+            this.txtFilePath.Location = new System.Drawing.Point(222, 352);
             this.txtFilePath.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtFilePath.Name = "txtFilePath";
             this.txtFilePath.Size = new System.Drawing.Size(305, 25);
@@ -54,17 +54,17 @@
             this.btnDuplicate.Name = "btnDuplicate";
             this.btnDuplicate.Size = new System.Drawing.Size(114, 31);
             this.btnDuplicate.TabIndex = 2;
-            this.btnDuplicate.Text = "Duplicate";
+            this.btnDuplicate.Text = "Copy";
             this.btnDuplicate.UseVisualStyleBackColor = true;
             this.btnDuplicate.Click += new System.EventHandler(this.btnDuplicate_Click);
             // 
             // lvFileList
             // 
             this.lvFileList.HideSelection = false;
-            this.lvFileList.Location = new System.Drawing.Point(449, 88);
+            this.lvFileList.Location = new System.Drawing.Point(393, 88);
             this.lvFileList.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.lvFileList.Name = "lvFileList";
-            this.lvFileList.Size = new System.Drawing.Size(274, 199);
+            this.lvFileList.Size = new System.Drawing.Size(360, 199);
             this.lvFileList.TabIndex = 3;
             this.lvFileList.UseCompatibleStateImageBehavior = false;
             this.lvFileList.View = System.Windows.Forms.View.Details;
@@ -73,17 +73,17 @@
             // lvTargetFiles
             // 
             this.lvTargetFiles.HideSelection = false;
-            this.lvTargetFiles.Location = new System.Drawing.Point(35, 88);
+            this.lvTargetFiles.Location = new System.Drawing.Point(12, 88);
             this.lvTargetFiles.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.lvTargetFiles.Name = "lvTargetFiles";
-            this.lvTargetFiles.Size = new System.Drawing.Size(274, 199);
+            this.lvTargetFiles.Size = new System.Drawing.Size(360, 199);
             this.lvTargetFiles.TabIndex = 4;
             this.lvTargetFiles.UseCompatibleStateImageBehavior = false;
             this.lvTargetFiles.View = System.Windows.Forms.View.Details;
             // 
             // btnQuickSwap
             // 
-            this.btnQuickSwap.Location = new System.Drawing.Point(583, 346);
+            this.btnQuickSwap.Location = new System.Drawing.Point(448, 302);
             this.btnQuickSwap.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnQuickSwap.Name = "btnQuickSwap";
             this.btnQuickSwap.Size = new System.Drawing.Size(114, 31);
@@ -94,10 +94,10 @@
             // 
             // btnSwap
             // 
-            this.btnSwap.Location = new System.Drawing.Point(315, 197);
+            this.btnSwap.Location = new System.Drawing.Point(583, 346);
             this.btnSwap.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnSwap.Name = "btnSwap";
-            this.btnSwap.Size = new System.Drawing.Size(130, 39);
+            this.btnSwap.Size = new System.Drawing.Size(114, 31);
             this.btnSwap.TabIndex = 9;
             this.btnSwap.Text = "Swap";
             this.btnSwap.UseVisualStyleBackColor = true;
