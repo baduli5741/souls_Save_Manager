@@ -37,6 +37,7 @@
             this.btnSwap = new System.Windows.Forms.Button();
             this.comboBoxGames = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.btnOpenPath = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // txtFilePath
@@ -122,11 +123,23 @@
             this.label1.TabIndex = 11;
             this.label1.Text = "Select your game";
             // 
+            // btnOpenPath
+            // 
+            this.btnOpenPath.Location = new System.Drawing.Point(71, 347);
+            this.btnOpenPath.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnOpenPath.Name = "btnOpenPath";
+            this.btnOpenPath.Size = new System.Drawing.Size(114, 31);
+            this.btnOpenPath.TabIndex = 12;
+            this.btnOpenPath.Text = "go to File";
+            this.btnOpenPath.UseVisualStyleBackColor = true;
+            this.btnOpenPath.Click += new System.EventHandler(this.btnOpenPath_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(765, 399);
+            this.Controls.Add(this.btnOpenPath);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.comboBoxGames);
             this.Controls.Add(this.btnSwap);
@@ -153,6 +166,7 @@
         private System.Windows.Forms.Button btnSwap;
         private System.Windows.Forms.ComboBox comboBoxGames;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button btnOpenPath;
     }
 }
 
