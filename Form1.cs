@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
 
@@ -565,6 +566,42 @@ namespace souls_Save_Manager
             userDirectory = GetUserDirectory(selectedGame);
             SetTargetFileName(GetTargetFileNameForGame(selectedGame));
             btnFind_Click(sender, e);
+        }
+
+        private void btnOpenPath_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // txtFilePath에서 경로 가져오기
+                string[] filePaths = txtFilePath.Text.Split('\n');
+
+                // 유효성 검사: txtFilePath에 두 번째 줄(파일 경로)이 있는지 확인
+                if (filePaths.Length < 2 || string.IsNullOrEmpty(filePaths[1]))
+                {
+                    MessageBox.Show("No valid file path found. Please select a game and try again.",
+                                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                string filePath = filePaths[1].Trim();
+
+                // 파일 경로가 유효한지 확인
+                if (string.IsNullOrEmpty(filePath) || !File.Exists(filePath))
+                {
+                    MessageBox.Show("The specified file path is invalid or does not exist.",
+                                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // 파일 탐색기로 열기
+                Process.Start("explorer.exe", $"/select,\"{filePath}\"");
+            }
+            catch (Exception ex)
+            {
+                // 예외 처리: 예상치 못한 오류 발생 시 메시지 표시
+                MessageBox.Show("Error opening file path: " + ex.Message,
+                                "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }
