@@ -1,5 +1,6 @@
 # Souls Save Manager
-
+https://www.nexusmods.com/darksouls3/mods/1685?tab=description
+thx for 3000 downloads!
 제작 목적:
 
 - 세이브 파일 백업
